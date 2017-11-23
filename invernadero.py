@@ -78,7 +78,6 @@ def apagarBombillo():
 
 def main():
         c = arduino.read()
-        print c
         if not c:
             cont = urllib2.urlopen("%s/commands/execute?api_key=%s"%(talkback_url, talkback_key))
             command = cont.read()
