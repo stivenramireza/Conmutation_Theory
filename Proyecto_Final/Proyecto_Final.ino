@@ -90,10 +90,12 @@ void loop() {
 void automatizar() {
   if (h >= 40 && (t >= 32 && t <=36)) {
     encender();
+    apagar();
     regar();
     
   }else if(h >= 40 && t >= 36){
     encender();
+    apagar();
     ventilar();
   }else {
     if (t >= 32) {
