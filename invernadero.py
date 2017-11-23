@@ -106,6 +106,8 @@ def main():
             ventilar()
         elif c == 'E':
             encenderBombillo()
+        elif c == 'P':
+            apagarBombillo()
 
 if __name__ == '__main__':
     while(True):
