@@ -80,13 +80,13 @@ def main():
         c = arduino.read()
         print c
         if not c:
-            cont = urllib2.urlopen("https://api.thingspeak.com/talkbacks/20308/commands?api_key=KLT3FI87ARIIAXV4")
+            cont = urllib2.urlopen("%s/commands/execute?api_key=%s"%(talkback_url, talkback_key))
             command = cont.read()
-            if command == 'manual':
+            if command == 'MANUAL':
                 arduino.write('M')
                 print "-> Ingreso a la raspberry MANUAL"
                 regarManual()
-            elif command == 'automatico':
+            elif command == 'AUTO':
                 arduino.write('A')
                 print "-> Ingreso a la raspberry AUTOMATICO"
                 regarAutomatico()
