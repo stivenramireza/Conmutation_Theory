@@ -1,12 +1,10 @@
-//#include "DHT.h"
+// @author: Jose Miguel Alzate Acevedo
+// @author: Stiven Ramirez Arango
+// @version: 1.0
+// @date: 23/11/2017
 
-//#define ledRegar 22
-//#define ledAire 23
-//#define ledEnce 24
 #define temperature A0
 #define humedad A1
-//#define DHTPIN 2
-//#define DHTTYPE DHT11
 #define led22 22
 #define led23 23
 #define led24 24
@@ -24,27 +22,14 @@
 #define led36 36
 #define led37 37
 
-int iRegar;
-int iEncender;
-int iAire;
-
 float t;
 float posicion;
 float h;
 float posicion2;
-//float h;
-int cantR = 1;
 bool rego;
-bool automatico;
-
-//DHT dht(DHTPIN, DHTTYPE);
+bool ventilo;
 
 void setup() {
-  /**
-  pinMode(ledRegar, OUTPUT);
-  pinMode(ledAire, OUTPUT);
-  pinMode(ledEnce, OUTPUT);
-  */
   pinMode(led22, OUTPUT);
   pinMode(led23, OUTPUT);
   pinMode(led24, OUTPUT);
@@ -65,11 +50,8 @@ void setup() {
   pinMode(humedad, INPUT);  
 
   Serial.begin(9600);
-  //dht.begin();
 }
 void loop() {
-  //t = dht.readTemperature();
-  //h = dht.readHumidity();
   if(Serial.available()>0){
     char comando = Serial.read();
     if(comando == 'R'){
@@ -78,9 +60,19 @@ void loop() {
     }else if(comando == 'A'){
        Serial.print('A');
        automatizar();
-    }
-    /**
-    if(comando == 'T'){
+    }else if(comando == 'M'){
+       Serial.print('M');
+       manual();
+    }else if(comando == 'V'){
+       Serial.print('V');
+       ventilar();
+    }else if(comando == 'E'){
+       Serial.print('E');
+       encender();
+    }else if(comando == 'P'){
+       Serial.print('P');
+       apagar();
+    }else if(comando == 'T'){
       Serial.print('T');
       posicion = analogRead(temperature);
       t = map(posicion,0,1023,0,100);
@@ -90,85 +82,44 @@ void loop() {
       posicion2 = analogRead(humedad);
       h = map(posicion2,0,1023,0,100);
       Serial.println((int)h);
-     }else if(comando == 'A'){
-       Serial.print('A');
-       automatizar();
-     }else if(comando == 'M'){
-       Serial.print('M');
-       manual();
-     }else if(comando == 'R'){
-       Serial.print('R');
-       regar();
-     }else if(comando == 'V'){
-       Serial.print('V');
-       ventilar();
-     }else if(comando == 'E'){
-       Serial.print('E');
-       encender();
      }
-     */
-     
   }
 }
 
 
 void automatizar() {
-  if (h >= 40) {
+  if (h >= 40 && (t >= 32 && t <=36)) {
     encender();
+    regar();
+    
+  }else if(h >= 40 && t >= 36){
+    encender();
+    ventilar();
   }else {
+    if (t >= 32) {
+      if (t >= 36) {
+        ventilar();
+      }else {
+        apagar();
+        regar();
+      }
     apagar();
   }
-  
-  if (t >= 32) {
-    if (t >= 36) {
-      ventilar();
-    }
-    else {
-      apagar();
-    }
-    regar();
-  }
-
-  if (cantR == 4) {
-    cantR = 1;
-  }
-  else {
-    cantR += 1;
-  }
-
-  if (rego == false) {
-    delay(5000);
-  }
-  else {
-    delay(2000);
-  }
+}
 }
 
-/**
 void manual() {
-  if (iEncender == 1) {
+  if(rego == false){
     regar();
-    cantR = 1;
+  }else{
+    apagar();
   }
-  else {
-    digitalWrite(ledEnce, 0);
-  }
-
-  if (iAire == 1) {
+  if(ventilo == false){
     ventilar();
-  }
-  else {
-    digitalWrite(ledEnce, 0);
-  }
-
-  if (iRegar == 1) {
-    regar();
-  }
-  else {
-    digitalWrite(ledRegar, 0);
+  }else{
+    apagar();
   }
 }
-*/
 
 void regar() {
   digitalWrite(led22, 1);
@@ -234,21 +185,10 @@ void regar() {
   digitalWrite(led36, 0);
   delay(500);
   digitalWrite(led37, 0);
-  /**
-  if (cantR != 2) {
-    digitalWrite(ledRegar, 1);
-    delay(3000);
-    digitalWrite(ledRegar, 0);
-    rego = true;
-  }
-  else {
-    rego = false;
-  }
- */ 
+  rego = true;
 }
 
 void ventilar() {
-  for(int i = 0; i < 4; ++i){
   digitalWrite(led22, 1);
   digitalWrite(led23, 1);
   digitalWrite(led24, 1);
@@ -282,7 +222,57 @@ void ventilar() {
   digitalWrite(led35, 1);
   digitalWrite(led36, 1);
   digitalWrite(led37, 1);
-  }
+  delay(500);
+  digitalWrite(led22, 1);
+  digitalWrite(led23, 1);
+  digitalWrite(led24, 1);
+  digitalWrite(led25, 1);
+  digitalWrite(led26, 1);
+  digitalWrite(led27, 1);
+  digitalWrite(led28, 1);
+  digitalWrite(led29, 1);
+  digitalWrite(led30, 0);
+  digitalWrite(led31, 0);
+  digitalWrite(led32, 0);
+  digitalWrite(led33, 0);
+  digitalWrite(led34, 0);
+  digitalWrite(led35, 0);
+  digitalWrite(led36, 0);
+  digitalWrite(led37, 0);
+  delay(500);
+  digitalWrite(led22, 0);
+  digitalWrite(led23, 0);
+  digitalWrite(led24, 0);
+  digitalWrite(led25, 0);
+  digitalWrite(led26, 0);
+  digitalWrite(led27, 0);
+  digitalWrite(led28, 0);
+  digitalWrite(led29, 0);
+  digitalWrite(led30, 1);
+  digitalWrite(led31, 1);
+  digitalWrite(led32, 1);
+  digitalWrite(led33, 1);
+  digitalWrite(led34, 1);
+  digitalWrite(led35, 1);
+  digitalWrite(led36, 1);
+  digitalWrite(led37, 1);
+  delay(500);
+  digitalWrite(led22, 1);
+  digitalWrite(led23, 1);
+  digitalWrite(led24, 1);
+  digitalWrite(led25, 1);
+  digitalWrite(led26, 1);
+  digitalWrite(led27, 1);
+  digitalWrite(led28, 1);
+  digitalWrite(led29, 1);
+  digitalWrite(led30, 0);
+  digitalWrite(led31, 0);
+  digitalWrite(led32, 0);
+  digitalWrite(led33, 0);
+  digitalWrite(led34, 0);
+  digitalWrite(led35, 0);
+  digitalWrite(led36, 0);
+  digitalWrite(led37, 0);
 }
 
 
