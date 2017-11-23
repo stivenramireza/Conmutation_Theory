@@ -22,7 +22,7 @@ def getTemperatura(c):
     f.close()
 
 def getHumedad(h):
-    H = h.replace('\r\n','')
+    H = h.replace('\n','')
     print "Humedad: %s" % H
     f = urllib2.urlopen(update_url + "&field2=%s" % H)
     print "-> Se envio la humedad a ThingSpeak"
@@ -30,34 +30,50 @@ def getHumedad(h):
 
 def regarDefault():
     r = "100"
-    R = r.replace('\r\n','')
-    print "Se esta regando las plantas"
+    R = r.replace('\n','')
+    print "Se esta regando las plantas por defecto"
     f = urllib2.urlopen(update_url + "&field3=%s" % R)
-    print "-> Se envio el mensaje a ThingSpeak"
+    print "-> Se envio el regado por defecto a ThingSpeak"
     f.close()
 
 def regarAutomatico():
+    ra = "80"
+    RA = ra.replace('\n','')
     print "Se esta regando las plantas AUTOMATICAMENTE"
-    f = urllib2.urlopen(update_url + "&field4=%s" % ra.rstrip('\n'))
-    print "-> Se envio el mensaje a ThingSpeak"
+    f = urllib2.urlopen(update_url + "&field4=%s" % RA)
+    print "-> Se envio el regado automatico a ThingSpeak"
     f.close()
 
 def regarManual():
+    rm = "60"
+    RM = rm.replace('\n','')
     print "Se esta regando las plantas MANUALMENTE"
-    f = urllib2.urlopen(update_url + "&field5=%s" % rm.rstrip('\n'))
-    print "-> Se envio el mensaje a ThingSpeak"
+    f = urllib2.urlopen(update_url + "&field5=%s" % RM)
+    print "-> Se envio el regado manual a ThingSpeak"
     f.close()
 
 def ventilar():
+    v = "40"
+    V = v.replace('\n','')
     print "Se esta ventilando"
-    f = urllib2.urlopen(update_url + "&field6=%s" % v.rstrip('\n'))
+    f = urllib2.urlopen(update_url + "&field6=%s" % V)
     print "-> Se envio el ventilador a ThingSpeak"
     f.close()
 
 def encenderBombillo():
+    b = "20"
+    B = b.replace('\n','')
     print "Se encendio el bombillo"
-    f = urllib2.urlopen(update_url + "&field7=%s" % v.rstrip('\n'))
+    f = urllib2.urlopen(update_url + "&field7=%s" % B)
     print "-> Se envio el encendido de bombillo a ThingSpeak"
+    f.close()
+
+def apagarBombillo():
+    p = "1"
+    P = p.replace('\n','')
+    print "Se apago el bombillo"
+    f = urllib2.urlopen(update_url + "&field8=%s" % P)
+    print "-> Se envio el apagado de bombillo a ThingSpeak"
     f.close()
 
 def main():
